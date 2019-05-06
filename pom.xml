@@ -8,10 +8,10 @@
         <version>2.1.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.pmt</groupId>
-    <artifactId>pmt</artifactId>
+    <groupId>com.pmt-java</groupId>
+    <artifactId>pmt-java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>pmt</name>
+    <name>pmt-java</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
