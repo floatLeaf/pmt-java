@@ -1,9 +1,7 @@
 package com.pmt.service.imp;
 
 import com.google.common.base.Preconditions;
-import com.pmt.dto.AuthDto;
 import com.pmt.dto.UserDto;
-import com.pmt.dto.UserInfoDto;
 import com.pmt.exception.PmtServiceException;
 import com.pmt.service.AuthService;
 import com.pmt.service.UserService;
@@ -25,13 +23,16 @@ public class AuthServiceImp implements AuthService {
     private UserService userService;
 
     @Override
-    public AuthDto login(String username, String password) {
+    public UserDto login(String username, String password) {
         Preconditions.checkArgument(username != null, "用户名不能为空");
         Preconditions.checkArgument(password != null, "密码不能为空");
         UserDto userDto = login(new UsernamePasswordToken(username, password));
-        AuthDto authDto = new AuthDto();
-        authDto.setToken(JWTUtil.sign(userDto.getUsername(), userDto.getPassword()));
-        return authDto;
+        userDto.setPassword(null);
+        return userDto;
+
+//        AuthDto authDto = new AuthDto();
+//        authDto.setToken(JWTUtil.sign(userDto.getUsername(), userDto.getPassword()));
+//        return authDto;
     }
 
     @Override
@@ -40,15 +41,17 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public UserInfoDto getCurrentUser(String token) {
-        Preconditions.checkArgument(token != null, "cannot find user by token null");
-        String username = JWTUtil.getUsername(token);
-        UserDto userDto = userService.obtainByUsername(username);
+    public UserDto getCurrentUser() {
+        return (UserDto) SecurityUtils.getSubject().getPrincipal();
 
-        if (!JWTUtil.verify(token, username, userDto.getPassword())) {
-            throw new IllegalArgumentException("token 校验失败");
-        }
-        return Transformer.transform(userDto, UserInfoDto.class);
+//        Preconditions.checkArgument(token != null, "cannot find user by token null");
+//        String username = JWTUtil.getUsername(token);
+//        UserDto userDto = userService.obtainByUsername(username);
+//
+//        if (!JWTUtil.verify(token, username, userDto.getPassword())) {
+//            throw new IllegalArgumentException("token 校验失败");
+//        }
+//        return Transformer.transform(userDto, UserInfoDto.class);
     }
 
     public UserDto login(AuthenticationToken token) {

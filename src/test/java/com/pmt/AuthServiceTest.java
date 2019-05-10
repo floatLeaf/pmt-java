@@ -1,6 +1,7 @@
 package com.pmt;
 
 import com.pmt.dto.AuthDto;
+import com.pmt.dto.UserDto;
 import com.pmt.service.AuthService;
 import com.zhimo.erp.framework.junit.MockData;
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class AuthServiceTest {
     public void login(){
         String username = "root";
         String password = "14e1b600b1fd579f47433b88e8d85291";
-        AuthDto result = authService.login(username, password);
+        UserDto result = authService.login(username, password);
         System.out.println("result >>>>>>>" + result.toString());
     }
 

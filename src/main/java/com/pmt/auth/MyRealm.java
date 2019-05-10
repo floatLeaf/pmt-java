@@ -1,9 +1,7 @@
 package com.pmt.auth;
 
 import com.pmt.dto.UserDto;
-import com.pmt.dto.UserInfoDto;
 import com.pmt.service.UserService;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.PasswordService;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -54,9 +52,9 @@ public class MyRealm extends AuthorizingRealm {
             throw new UnknownAccountException();
         }
 
-//        if (!passwordService.passwordsMatch(userDto.getPassword(), password)) {
-//            throw new IncorrectCredentialsException("用户名或密码错误");
-//        }
+        if (!Objects.equals(userDto.getPassword(), password)) {
+            throw new IncorrectCredentialsException("用户名或密码错误");
+        }
 
         return new SimpleAuthenticationInfo(userDto, password, getName());
     }

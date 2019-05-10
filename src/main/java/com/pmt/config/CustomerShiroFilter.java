@@ -17,6 +17,8 @@ public class CustomerShiroFilter extends FormAuthenticationFilter {
 
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
+        System.out.println("customerFilter=>>>>>>>>>>>>>>>>>>>>allowed");
+
         if (request instanceof HttpServletRequest) {
             if (((HttpServletRequest) request).getMethod().toUpperCase().equals("OPTIONS")) {
                 return true;
@@ -27,14 +29,17 @@ public class CustomerShiroFilter extends FormAuthenticationFilter {
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
+        System.out.println("customerFilter=>>>>>>>>>>>>>>>>>>>>deny");
+
         HttpServletResponse res = (HttpServletResponse)response;
         res.setHeader("Access-Control-Allow-Origin", "*");
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
         res.setStatus(HttpServletResponse.SC_OK);
-        res.setCharacterEncoding("UTF-8");
+        res.setCharacterEncoding("utf-8");
         PrintWriter writer = res.getWriter();
         Map<String, Object> map= new HashMap<>();
         map.put("code", 401);
-        map.put("msg", "未登录");
+        map.put("msg", "用户登录已过期");
         writer.write(JacksonUtil.obj2Str(map));
         writer.close();
         return false;
